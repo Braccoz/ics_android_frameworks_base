@@ -321,7 +321,12 @@ status_t CameraSource::configureCamera(
     if (width != -1 && height != -1) {
         if (!isVideoSizeSupported(width, height, sizes)) {
             LOGE("Video dimension (%dx%d) is unsupported", width, height);
-            return BAD_VALUE;
+			
+			//HACK FOR 1080p:
+			if ( height != 1088 ) {
+				return BAD_VALUE;
+			}	
+
         }
         if (isSetVideoSizeSupportedByCamera) {
             params->setVideoSize(width, height);
@@ -339,6 +344,15 @@ status_t CameraSource::configureCamera(
         // Do not configure the camera.
         // Use the current width and height value setting from the camera.
     }
+
+	//HACK FOR 1080p:
+	/*	
+	if ( height == 1088 ) {
+		LOGE("VIDEO HEIGHT IS 1088!!!  Setting VideoSize as 1920x1088 and PreviewSize as 1920x1080.");
+		params->setVideoSize(1920, 1088);
+		params->setPreviewSize(1920, 1080);
+	}
+	*/
 
     if (frameRate != -1) {
         CHECK(frameRate > 0 && frameRate <= 120);

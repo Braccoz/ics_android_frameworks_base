@@ -615,6 +615,13 @@ static void parseSizesList(const char *sizesStr, Vector<Size> &sizes)
 void CameraParameters::setPreviewSize(int width, int height)
 {
     char str[32];
+       // Hack for HTC Doubleshot 1080p camcorder:
+		/*       
+		if ( height == 1088 )
+               height = 1080;
+		*/
+       // *******************************************************
+
     snprintf(str, sizeof(str), "%dx%d", width, height);
     set(KEY_PREVIEW_SIZE, str);
 }
@@ -638,7 +645,9 @@ void CameraParameters::getPreferredPreviewSizeForVideo(int *width, int *height) 
 
 void CameraParameters::getSupportedPreviewSizes(Vector<Size> &sizes) const
 {
-    const char *previewSizesStr = get(KEY_SUPPORTED_PREVIEW_SIZES);
+    //Add size for 1080p:
+	//const char *previewSizesStr = get(KEY_SUPPORTED_PREVIEW_SIZES);
+	const char *previewSizesStr = "1920x1088,1280x720,960x544,800x480,720x480,640x480,640x368,480x320,320x240";
     parseSizesList(previewSizesStr, sizes);
 }
 
