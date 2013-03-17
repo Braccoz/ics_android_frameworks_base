@@ -1774,7 +1774,7 @@ public class PowerManagerService extends IPowerManager.Stub
                     // make sure button and key backlights are off too
                     mButtonLight.turnOff();
                     mKeyboardLight.turnOff();
-                    // If hiding keyboard, turn off leds
+                    // turn off alt/shift leds when the screen turns off
 		    setKeyboardLight(false, 1);
 		    setKeyboardLight(false, 2);
                     // clear current value so we will update based on the new conditions
@@ -3005,6 +3005,11 @@ public class PowerManagerService extends IPowerManager.Stub
                         }
                     }
                     userActivity(SystemClock.uptimeMillis(), false, BUTTON_EVENT, true);
+                }
+                //turn off alt/shift leds when closing the keyboard lid
+                if (!visible) {
+                    setKeyboardLight(false, 1);
+		    setKeyboardLight(false, 2);
                 }
             }
         }
